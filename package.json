@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "axios": "^0.26.0",
+    "isarray": "^1.0.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.1082.0",
+    "serverless-offline": "^8.5.0"
+  }
+}

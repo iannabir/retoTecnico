@@ -1,0 +1,22 @@
+{
+    "count": "conteo",
+    "next": "siguiente",
+    "previous": "anterior",
+    "results": "resultados",
+    "name": "nombre",
+    "height": "altura",
+    "mass": "masa",
+    "hair_color": "colorDeCabello",
+    "skin_color": "colorDePiel",
+    "eye_color": "colorDeOjos",
+    "birth_year": "anioDeNacimiento",
+    "gender": "genero",
+    "homeworld": "mundoNatal",
+    "films": "peliculas",
+    "species": "especies",
+    "vehicles": "vehiculos",
+    "starships": "navesEstelares",
+    "created": "creado",
+    "edited": "editado",
+    "url": "url"
+}

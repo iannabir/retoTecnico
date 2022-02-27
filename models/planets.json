@@ -1,0 +1,20 @@
+{
+    "count": "conteo",
+    "next": "siguiente",
+    "previous": "anterior",
+    "results": "resultados",
+    "name": "nombre",
+    "rotation_period": "periodoDeRotacion",
+    "orbital_period": "periodoOrbital",
+    "diameter": "diametro",
+    "climate": "clima",
+    "gravity": "gravedad",
+    "terrain": "terreno",
+    "surface_water": "superficieDelAgua",
+    "population": "poblacion",
+    "residents": "residentes",
+    "films": "peliculas",
+    "created": "creado",
+    "edited": "editado",
+    "url": "url"
+}
