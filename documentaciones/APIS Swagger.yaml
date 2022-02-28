@@ -1,0 +1,480 @@
+openapi: 3.0.0
+info:
+  title: Reto Técnico. Star Wars - Swapi
+  description: Integraciones con AWS y NodeJS
+  version: 0.1.9
+servers:
+- url: https://xpl8pmbkd5.execute-api.us-east-1.amazonaws.com/dev
+  description: ""  
+tags:
+- name: "Integración AWS Lambda y NodeJS"
+  description: ""  
+paths:
+  /apiBase:
+    get:
+      tags:
+        - Star Wars - Swapi
+      summary: Obtiene los ítems principales de la API Star Wars
+      responses:
+        '200':
+          description: Datos devueltos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gente:
+                    type: string
+                    example: "https://swapi.py4e.com/api/people/"
+                  planetas:
+                    type: string
+                    example: "https://swapi.py4e.com/api/planets/"  
+                  peliculas:
+                    type: string
+                    example: "https://swapi.py4e.com/api/films/"  
+                  especie:
+                    type: string
+                    example: "https://swapi.py4e.com/api/species/"  
+                  vehiculos:
+                    type: string
+                    example: "https://swapi.py4e.com/api/vehicles/"  
+                  naves espaciales:
+                    type: string
+                    example: "https://swapi.py4e.com/api/starships/"  
+                     
+        '400':
+          description: Respuesta con error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hubo un error al consumir el servicio Swapi."
+  /apiPeople:
+    get:
+      tags:
+        - Star Wars - Swapi
+      summary: Obtiene los ítems de la API People Star Wars
+      responses:
+        '200':
+          description: Datos devueltos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conteo:
+                    type: integer
+                    example: 87
+                  siguiente:
+                    type: string
+                    example: "https://swapi.py4e.com/api/people/?page=2"
+                  anterior:
+                    type: string
+                    example: null
+                  resultados:
+                     type: array
+                     items:
+                          type: object
+                          properties:
+                            nombre:
+                              type: string
+                              example: "Luke Skywalker"
+                            altura:
+                              type: integer
+                              example: 172
+                            masa:
+                              type: integer
+                              example: 77  
+                            colorDeCabello:
+                              type: string
+                              example: "blond"  
+                            colorDePiel:
+                              type: string
+                              example: "fair"
+                            colorDeOjos:
+                              type: string
+                              example: "blue"  
+                            anioDeNacimiento:
+                              type: string
+                              example: "19BBY"  
+                            genero:
+                              type: string
+                              example: "male"  
+                            mundoNatal:
+                              type: string
+                              example: "https://swapi.py4e.com/api/planets/1/"  
+                            peliculas:
+                              type: object
+                              example: [
+                                  "https://swapi.py4e.com/api/films/1/",
+                                  "https://swapi.py4e.com/api/films/2/",
+                                  "https://swapi.py4e.com/api/films/3/",
+                                  "https://swapi.py4e.com/api/films/6/",
+                                  "https://swapi.py4e.com/api/films/7/"
+                              ]
+                            especies:
+                              type: object
+                              example: [
+                                   "https://swapi.py4e.com/api/species/1/"
+                              ]  
+                            vehiculos:
+                              type: object
+                              example: [
+                                  "https://swapi.py4e.com/api/vehicles/14/",
+                                  "https://swapi.py4e.com/api/vehicles/30/"
+                              ]    
+                            navesEstelares:
+                              type: object
+                              example: [
+                                    "https://swapi.py4e.com/api/starships/12/",
+                                   "https://swapi.py4e.com/api/starships/22/"
+                              ]
+                            creado:
+                              type: string
+                              example: "2014-12-09T13:50:51.644000Z"
+                            editado:
+                              type: string
+                              example: "2014-12-20T21:17:56.891000Z"
+                            url:
+                              type: string
+                              example: "https://swapi.py4e.com/api/people/1/"   
+        '400':
+          description: Respuesta con error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hubo un error al consumir el servicio Swapi." 
+  /apiPlanets:
+    get:
+      tags:
+        - Star Wars - Swapi
+      summary: Obtiene los ítems de la API Planets Star Wars
+      responses:
+        '200':
+          description: Datos devueltos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conteo:
+                    type: integer
+                    example: 61
+                  siguiente:
+                    type: string
+                    example: "https://swapi.py4e.com/api/planets/?page=2"
+                  anterior:
+                    type: string
+                    example: null
+                  resultados:
+                     type: array
+                     items:
+                          type: object
+                          properties:
+                            nombre:
+                              type: string
+                              example: "Tatooine"
+                            periodoDeRotacion:
+                              type: string
+                              example: "23"
+                            periodoOrbital:
+                              type: string
+                              example: "304"  
+                            diametro:
+                              type: string
+                              example: "10465"  
+                            clima:
+                              type: string
+                              example: "arid"
+                            gravedad:
+                              type: string
+                              example: "1 standard"  
+                            terreno:
+                              type: string
+                              example: "desert"  
+                            superficieDelAgua:
+                              type: string
+                              example: "1"  
+                            poblacion:
+                              type: string
+                              example: "200000"  
+                            residentes:
+                              type: object
+                              example: [
+                                  "https://swapi.py4e.com/api/people/1/",
+                                  "https://swapi.py4e.com/api/people/2/",
+                                  "https://swapi.py4e.com/api/people/4/",
+                                  "https://swapi.py4e.com/api/people/6/",
+                                  "https://swapi.py4e.com/api/people/7/",
+                                  "https://swapi.py4e.com/api/people/8/",
+                                  "https://swapi.py4e.com/api/people/9/",
+                                  "https://swapi.py4e.com/api/people/11/",
+                                  "https://swapi.py4e.com/api/people/43/",
+                                  "https://swapi.py4e.com/api/people/62/"
+                              ]
+                            peliculas:
+                              type: object
+                              example: [
+                                  "https://swapi.py4e.com/api/films/1/",
+                                  "https://swapi.py4e.com/api/films/3/",
+                                  "https://swapi.py4e.com/api/films/4/",
+                                  "https://swapi.py4e.com/api/films/5/",
+                                  "https://swapi.py4e.com/api/films/6/"
+                              ]  
+                            creado:
+                              type: string
+                              example: "2014-12-09T13:50:49.641000Z"
+                            editado:
+                              type: string
+                              example: "2014-12-20T20:58:18.411000Z"
+                            url:
+                              type: string
+                              example: "https://swapi.py4e.com/api/planets/1/" 
+        '400':
+          description: Respuesta con error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hubo un error al consumir el servicio Swapi."                     
+  /programmers:
+    post:
+      tags:
+        - Integraciones con DynamoDB
+      summary: Inserta un recurso a la tabla creada en DynamoDB
+      requestBody:
+        content:
+          application/json:
+            schema:     
+              type: object
+              properties:
+                nombres:
+                  type: string
+                  example: "Roberto Fernando"
+                apellidos:
+                  type: string
+                  example: "Camacho Palacios"  
+                edad:  
+                  type: number
+                  example: 35
+                genero:  
+                  type: string
+                  example: "masculino"
+                gradoDeInstruccion:  
+                  type: string
+                  example: "universitario"
+                aniosDeExperiencia:  
+                  type: number
+                  example: 8 
+                habilidadesBlandas:
+                  type: object
+                  example: [
+                    "Orientado a resultados",
+                    "Liderazgo",
+                    "Puntual"
+                  ]
+                lenguajesDeProgramacion:
+                  type: object
+                  example: [
+                     "Python",
+                     "NodeJS",
+                     "Angular",
+                     "React Native"
+                  ]  
+                certificaciones:
+                  type: object
+                  example: [
+                      "Scrum",
+                      "Diseño de componentes en React Native"
+                  ]   
+                expectativaSalarial:  
+                  type: number
+                  example: 6000  
+      responses:
+        '201':
+          description: Datos registrados correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Datos registrados correctamente"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "8b5be2874a973c9b9110cbf80ddd2afe"
+        '400':
+          description: Respuesta con error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hubo un error al insertar el ítem en la base de datos, por favor, inténtelo nuevamente."
+                            
+  /listProgrammers:
+    get:
+      tags:
+        - Integraciones con DynamoDB
+      summary: Obtiene los recursos de la tabla creada en DynamoDB
+      responses:
+        '200':
+          description: Datos devueltos correctamente
+          content:
+            application/json:
+              schema:     
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "8b5be2874a973c9b9110cbf80ddd2afe"
+                  nombres:
+                    type: string
+                    example: "Roberto Fernando"
+                  apellidos:
+                    type: string
+                    example: "Camacho Palacios"  
+                  edad:  
+                    type: number
+                    example: 35
+                  genero:  
+                    type: string
+                    example: "masculino"
+                  gradoDeInstruccion:  
+                    type: string
+                    example: "universitario"
+                  aniosDeExperiencia:  
+                    type: number
+                    example: 8 
+                  habilidadesBlandas:
+                    type: object
+                    example: [
+                      "Orientado a resultados",
+                      "Liderazgo",
+                      "Puntual"
+                    ]
+                  lenguajesDeProgramacion:
+                    type: object
+                    example: [
+                       "Python",
+                       "NodeJS",
+                       "Angular",
+                       "React Native"
+                    ]  
+                  certificaciones:
+                    type: object
+                    example: [
+                        "Scrum",
+                        "Diseño de componentes en React Native"
+                    ]   
+                  expectativaSalarial:  
+                    type: number
+                    example: 6000   
+        '400':
+          description: Respuesta con error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hubo un error al recuperar los ítems de la base de datos, por favor, inténtelo nuevamente."     
+  /programmer/{id}:
+    get:
+      tags:
+        - Integraciones con DynamoDB
+      summary: Obtiene sólo un recurso de la tabla en DynamoDB, mediante el parámetro ID
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Datos devueltos correctamente
+          content:
+            application/json:
+              schema:     
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "8b5be2874a973c9b9110cbf80ddd2afe"
+                  nombres:
+                    type: string
+                    example: "Roberto Fernando"
+                  apellidos:
+                    type: string
+                    example: "Camacho Palacios"  
+                  edad:  
+                    type: number
+                    example: 35
+                  genero:  
+                    type: string
+                    example: "masculino"
+                  gradoDeInstruccion:  
+                    type: string
+                    example: "universitario"
+                  aniosDeExperiencia:  
+                    type: number
+                    example: 8 
+                  habilidadesBlandas:
+                    type: object
+                    example: [
+                      "Orientado a resultados",
+                      "Liderazgo",
+                      "Puntual"
+                    ]
+                  lenguajesDeProgramacion:
+                    type: object
+                    example: [
+                       "Python",
+                       "NodeJS",
+                       "Angular",
+                       "React Native"
+                    ]  
+                  certificaciones:
+                    type: object
+                    example: [
+                        "Scrum",
+                        "Diseño de componentes en React Native"
+                    ]   
+                  expectativaSalarial:  
+                    type: number
+                    example: 6000   
+        '400':
+          description: Respuesta con error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hubo un error al recuperar el ítem de la base de datos, por favor, inténtelo nuevamente."                    
+            
+                  
+                     
+                             
+                              
+                              
+                              
+                              

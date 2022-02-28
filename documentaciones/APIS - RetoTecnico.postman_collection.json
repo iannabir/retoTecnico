@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "4fac7f76-9841-442c-94af-dadf414d8728",
+		"name": "APIS - RetoTecnico",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "StarWars API Base",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "swapi.py4e.com/api/",
+					"host": [
+						"swapi",
+						"py4e",
+						"com"
+					],
+					"path": [
+						"api",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "StarWars API People",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://swapi.py4e.com/api/people/",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"py4e",
+						"com"
+					],
+					"path": [
+						"api",
+						"people",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "StarWars API Planets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "swapi.py4e.com/api/planets/",
+					"host": [
+						"swapi",
+						"py4e",
+						"com"
+					],
+					"path": [
+						"api",
+						"planets",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AWS Api Base (Traducido)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://xpl8pmbkd5.execute-api.us-east-1.amazonaws.com/dev/apiBase",
+					"protocol": "https",
+					"host": [
+						"xpl8pmbkd5",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"apiBase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AWS Api People (Traducido)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://xpl8pmbkd5.execute-api.us-east-1.amazonaws.com/dev/apiPeople",
+					"protocol": "https",
+					"host": [
+						"xpl8pmbkd5",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"apiPeople"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AWS API Planets (Traducido)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://xpl8pmbkd5.execute-api.us-east-1.amazonaws.com/dev/apiPlanets",
+					"protocol": "https",
+					"host": [
+						"xpl8pmbkd5",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"apiPlanets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AWS - Inserta un recurso",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombres\": \"Luis Mario\",\r\n    \"apellidos\": \"Gonzaga Egusquiza\",\r\n    \"edad\": 40,\r\n    \"genero\": \"masculino\",\r\n    \"gradoDeInstruccion\": \"universitario\",\r\n    \"aniosDeExperiencia\": 8,\r\n    \"habilidadesBlandas\": [\r\n        \"Orientado a resultados\",\r\n        \"Liderazgo\",\r\n        \"Puntual\"\r\n    ],\r\n    \"lenguajesDeProgramacion\": [\r\n       \"Python\",\r\n       \"NodeJS\",\r\n       \"Angular\",\r\n       \"React Native\"\r\n    ],\r\n    \"certificaciones\": [\r\n        \"Scrum\",\r\n        \"Diseño de componentes en React Native\"\r\n    ],\r\n    \"expectativaSalarial\": 6000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://xpl8pmbkd5.execute-api.us-east-1.amazonaws.com/dev/programmers",
+					"protocol": "https",
+					"host": [
+						"xpl8pmbkd5",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"programmers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AWS - Obtiene todos los recursos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://xpl8pmbkd5.execute-api.us-east-1.amazonaws.com/dev/listProgrammers",
+					"protocol": "https",
+					"host": [
+						"xpl8pmbkd5",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"listProgrammers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AWS - Obtiene un recurso mediante el ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://xpl8pmbkd5.execute-api.us-east-1.amazonaws.com/dev/programmer/72bf041fd8baa0a28f1e7c16130a8865",
+					"protocol": "https",
+					"host": [
+						"xpl8pmbkd5",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"programmer",
+						"72bf041fd8baa0a28f1e7c16130a8865"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,12 +1,22 @@
+//Importamos la librería AWS, pero sólo a nivel de desarrollo (devDependencies, véase package.json), 
+//con el fin de no aumentar el peso del package.zip, el cual se subirá a AWS S3, para después ser indexado con AWS CloudFormation.
+//Además, AWS Lambda no requiere la librería AWS, ya que la tiene incorporada intrínsecamente.
 const aws = require('aws-sdk');
-const translate = new aws.Translate({apiVersion: '2017-07-01'});
-const axios = require('axios');
-const isarray = require('isarray');
-const crypto = require('crypto');
 
+//Importamos el servicio AWS Translate (para fines demostrativos de Integración)
+const translate = new aws.Translate({apiVersion: '2017-07-01'});
+
+//Creamos un nuevo objeto para manipular la librería de AWS DynamoDB.
 const dynamodb = new aws.DynamoDB.DocumentClient();
 const table = 'retoTecnico';
 
+//Importamos otras librerías necesarias para el proyecto.
+const axios = require('axios');
+const isarray = require('isarray');
+const crypto = require('crypto');
+const Joi = require("joi");
+
+//Hacemos un requerimiento de los modelos de traducción para las APIS.
 const peopleMap = require('./models/people.json');
 const planetsMap = require('./models/planets.json');
 
@@ -102,7 +112,7 @@ module.exports.apiPlanets = async (event) => {
 
 };
 
- 
+// Función asíncrona que nos permite traducir las APIS.
 async function generateTranslation(urlSwapi, fileModel){
   var arr;
   var englishBody = [];
@@ -141,59 +151,155 @@ async function generateTranslation(urlSwapi, fileModel){
     
 }
 
+//Desde este punto, veremos 3 APIS: 
+// 1) API Programmers se encarga de insertar un recurso en la tabla creada de DynamoDB.
+// 2) API listProgrammers se encarga de recuperar los recursos almacenados en DynamoDB.
+// 3) API Programmer extrae un recurso almacenado en DynamoDB, mediante el parámetro ID.
 
 module.exports.programmers = async (event) => {
-    var body  = JSON.parse(event.body);
-    var identifier = crypto.randomBytes(16).toString('hex');
-    var statusCode;
-    var msg;
-    
-    const params = {
-      TableName: table,             
-      Item: {
-        id: identifier,                  
-        nombres: body.nombres,
-        apellidos: body.apellidos,
-        edad: body.edad,
-        genero: body.genero,
-        gradoDeInstruccion: body.gradoDeInstruccion,
-        aniosDeExperiencia: body.aniosDeExperiencia,
-        habilidadesBlandas: body.habilidadesBlandas,
-        lenguajesDeProgramacion: body.lenguajesDeProgramacion,
-        certificaciones: body.certificaciones,
-        expectativaSalarial: body.expectativaSalarial               
-      }
-    };
-    await dynamodb.put(params).promise()
-        .then(function(data) {            
-           statusCode = 201;
-           msg = "Datos registrados correctamente";
-        }).catch(function(err) {
-           console.error(err);
-           statusCode = 400;   
-           msg = "Hubo un error al insertar el ítem en la base de datos, por favor, inténtelo nuevamente.";       
-        });  
+    try {
+      var body  = JSON.parse(event.body);
 
-    if (statusCode == 201){
-      console.log(msg, '. Identificador: ', identifier);
-      return {
-        statusCode: 201,
-        body: JSON.stringify({
-          message: msg,
-          data: {
-            id: identifier
-          }          
-        })
-      }; 
-    }else{
-      console.error(msg);
+      // Procederemos a validar los campos, antes de insertarlos en la base de datos. MUY IMPORTANTE.
+      // Para ello, haremos uso de la potente librería Joi.
+      const schema = Joi.object({
+        nombres: Joi.string().trim().max(30).required().messages({
+          'string.base': `El campo nombres debe ser de tipo 'texto'`,
+          'string.empty': `El campo nombres no debe estar vacío`,
+          'any.required': `El campo nombres es requerido`,
+          'string.max' : `El campo nombres debe tener 30 caracteres como máximo`
+        }),
+        apellidos: Joi.string().trim().max(30).required().messages({
+          'string.base': `El campo apellidos debe ser de tipo 'texto'`,
+          'string.empty': `El campo apellidos no debe estar vacío`,
+          'any.required': `El campo apellidos es requerido`,
+          'string.max' : `El campo apellidos debe tener 30 caracteres como máximo`
+        }),
+        edad: Joi.number().integer().strict().required().messages({
+          'number.base': `El campo edad debe ser de tipo numérico`,
+          'number.empty': `Ingrese el campo 'edad'`,
+          'any.required': `El campo edad es requerido`,
+          'number.integer': `El campo edad es numérico`,
+          'number.unsafe': `El campo edad es un entero muy grande`
+        }),
+        genero: Joi.string().trim().max(10).required().messages({
+          'string.base': `El campo genero debe ser de tipo 'texto'`,
+          'string.empty': `El campo genero no debe estar vacío`,
+          'any.required': `El campo genero es requerido`,
+          'string.max' : `El campo genero debe tener 10 caracteres como máximo`
+        }),
+        gradoDeInstruccion: Joi.string().trim().max(20).required().messages({
+          'string.base': `El campo gradoDeInstruccion debe ser de tipo 'texto'`,
+          'string.empty': `El campo gradoDeInstruccion no debe estar vacío`,
+          'any.required': `El campo gradoDeInstruccion es requerido`,
+          'string.max' : `El campo gradoDeInstruccion debe tener 20 caracteres como máximo`
+        }),
+        aniosDeExperiencia: Joi.number().integer().strict().required().messages({
+          'number.base': `El campo aniosDeExperiencia debe ser de tipo numérico`,
+          'number.empty': `Ingrese el campo 'aniosDeExperiencia'`,
+          'any.required': `El campo aniosDeExperiencia es requerido`,
+          'number.integer': `El campo aniosDeExperiencia es numérico`,
+          'number.unsafe': `El campo aniosDeExperiencia es un entero muy grande`
+        }),
+        habilidadesBlandas: Joi.array().min(1).required().messages({
+          'any.required': `El campo habilidadesBlandas es requerido`,
+          'array.min': `El campo habilidadesBlandas debe tener un objeto como mínimo`
+        }),
+        lenguajesDeProgramacion: Joi.array().min(1).required().messages({
+          'any.required': `El campo lenguajesDeProgramacion es requerido`,
+          'array.min': `El campo lenguajesDeProgramacion debe tener un objeto como mínimo`
+        }),
+        certificaciones: Joi.array().min(1).required().messages({
+          'any.required': `El campo certificaciones es requerido`,
+          'array.min': `El campo certificaciones debe tener un objeto como mínimo`
+        }),
+        expectativaSalarial: Joi.number().integer().strict().required().messages({
+          'number.base': `El campo expectativaSalarial debe ser de tipo numérico`,
+          'number.empty': `Ingrese el campo 'expectativaSalarial'`,
+          'any.required': `El campo expectativaSalarial es requerido`,
+          'number.integer': `El campo expectativaSalarial es numérico`,
+          'number.unsafe': `El campo expectativaSalarial es un entero muy grande`
+        }),
+      }).options({ abortEarly: false });
+  
+      //Validamos el cuerpo
+      const validar= schema.validate(body);    
+  
+      //Si hay errores, los mostramos.
+      if(validar.error)                        
+      {
+        console.error(validar.error);
+        return {
+          statusCode: 400,
+          body: JSON.stringify({
+            message: "Se encontraron errores en la validación",
+            errores: validar.error.details  
+          })
+        }; 
+      }
+      
+      var identifier = crypto.randomBytes(16).toString('hex');  //Creamos un identificador
+      var statusCode;
+      var msg;
+      
+      //Construimos los parámetros para suministrarlo a la función PUT, de DynamoDB.
+      const params = {
+        TableName: table,             
+        Item: {
+          id: identifier,                  
+          nombres: body.nombres,
+          apellidos: body.apellidos,
+          edad: body.edad,
+          genero: body.genero,
+          gradoDeInstruccion: body.gradoDeInstruccion,
+          aniosDeExperiencia: body.aniosDeExperiencia,
+          habilidadesBlandas: body.habilidadesBlandas,
+          lenguajesDeProgramacion: body.lenguajesDeProgramacion,
+          certificaciones: body.certificaciones,
+          expectativaSalarial: body.expectativaSalarial               
+        }
+      };
+
+      //Usamos el operador AWAIT para esperar una PROMESA (promise). Nota: Sólo puede ser usado dentro de una función asíncrona.
+      await dynamodb.put(params).promise()
+          .then(function(data) {            
+             statusCode = 201;
+             msg = "Datos registrados correctamente";
+          }).catch(function(err) {
+             console.error(err);
+             statusCode = 400;   
+             msg = "Hubo un error al insertar el ítem en la base de datos, por favor, inténtelo nuevamente.";       
+          });  
+  
+      //Evaluamos los statusCode que pusimos más arriba, y hacemos uso de los console.log y console.error, con la finalidad de construir un historial de logs en AWS CloudWatch.
+      if (statusCode == 201){
+        console.log(msg, '. Identificador: ', identifier);
+        return {
+          statusCode: 201,
+          body: JSON.stringify({
+            message: msg,
+            data: {
+              id: identifier
+            }          
+          })
+        }; 
+      }else{
+        console.error(msg);
+        return {
+          statusCode: 400,
+          body: JSON.stringify({
+            message: msg          
+          })
+        };
+      }  
+    } catch (error) {      //Este Catch nos sirve para atrapar cualquier sintaxis errónea en el cuerpo de la API.
       return {
         statusCode: 400,
         body: JSON.stringify({
-          message: msg          
+          message: "El request del body está malformado"          
         })
       };
-    }     
+    }   
 }
 
 
@@ -264,8 +370,8 @@ module.exports.listProgrammers = async (event) => {
 
 module.exports.programmer = async (event) => {
   var sortArray = [];
-  var idProgrammer = event.pathParameters.id;
-  if (idProgrammer == null || idProgrammer == ""){
+  var idProgrammer = event.pathParameters.id;    //Capturamos el parámetro suministrado en la url.
+  if (idProgrammer == null || idProgrammer.trim() == ""){
     return {
       statusCode: 400,
       body: JSON.stringify({
